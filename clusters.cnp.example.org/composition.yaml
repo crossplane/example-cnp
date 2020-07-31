@@ -1,0 +1,39 @@
+apiVersion: apiextensions.crossplane.io/v1alpha1
+kind: Composition
+metadata:
+  name: clusters.cnp.example.org
+spec:
+  writeConnectionSecretsToNamespace: crossplane-system
+  reclaimPolicy: Delete
+  compositeResource:
+    apiVersion: cnp.example.org/v1alpha1
+    kind: Cluster
+  composedResources:
+  - base:
+      apiVersion: clusters.cnp.example.org/v1alpha1
+      kind: EKS
+    patches:
+    - fromFieldPath: metadata.annotations[crossplane.io/external-name]
+      toFieldPath: metadata.annotations[crossplane.io/external-name]
+    - fromFieldPath: metadata.uid
+      toFieldPath: spec.writeConnectionSecretToRef.name
+      transforms:
+      - type: string
+        string:
+          fmt: "%s-eks"
+    - fromFieldPath: spec.parameters.nodes.count
+      toFieldPath: spec.parameters.nodes.count
+    - fromFieldPath: spec.parameters.nodes.size
+      toFieldPath: spec.parameters.nodes.size
+  - base:
+      apiVersion: charts.cnp.example.org/v1alpha1
+      kind: FluentBit
+    patches:
+    - fromFieldPath: metadata.uid
+      toFieldPath: spec.providerRef.name
+      transforms:
+      - type: string
+        string:
+          fmt: "%s-eks"
+    - fromFieldPath: spec.parameters.logging.token
+      toFieldPath: spec.parameters.splunk.token
