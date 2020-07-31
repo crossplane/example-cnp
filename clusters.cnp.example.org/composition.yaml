@@ -7,7 +7,7 @@ spec:
   reclaimPolicy: Delete
   compositeResource:
     apiVersion: cnp.example.org/v1alpha1
-    kind: Cluster
+    kind: AllocatedCluster
   composedResources:
   - base:
       apiVersion: clusters.cnp.example.org/v1alpha1

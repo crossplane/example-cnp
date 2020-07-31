@@ -9,8 +9,18 @@ spec:
   # This policy is equivalent to the existing InfrastructurePublication. Making
   # this a field of the InfrastructureDefinition implies that the package author
   # controls the publication of packaged types; it cannot easily be overridden
-  # without forking/duplicating the package.
-  publicationPolicy: PublishRequirement
+  # without forking/duplicating the package. The options are 'Private' (the
+  # default), or 'Published'.
+  publicationPolicy: Published
+  # Publishing a composite resource defines a namespaced proxy of the composite
+  # resource. The group, version, and schema of this resource is identical to
+  # those of the composite resource but its kind must differ. Conceptually this
+  # is a 'published composite resource', rather than 'a requirement'.
+  publishedNames:
+    kind: Cluster
+    listKind: ClusterList
+    plural: clusters
+    singular: cluster
   # This policy determines whether Crossplane will automatically create cluster
   # roles for this composite resource and its requirement. ManageClusterRoles is
   # the default. Under this policy Crossplane will create edit and view RBAC
@@ -26,10 +36,10 @@ spec:
     group: cnp.example.org
     version: v1alpha1
     names:
-      kind: Cluster
-      listKind: ClusterList
-      plural: clusters
-      singular: cluster
+      kind: AllocatedCluster
+      listKind: AllocatedClusterList
+      plural: allocatedclusters
+      singular: allocatedcluster
     validation:
       openAPIV3Schema:
         type: object
