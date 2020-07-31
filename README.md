@@ -1,4 +1,4 @@
-# Platform API as Configuration
+# Cloud Native Platform API as Configuration
 
 This repository contains configuration for the Cloud Native Platform (CNP). CNP
 consists of a series of Crossplane packages that are automatically built and
