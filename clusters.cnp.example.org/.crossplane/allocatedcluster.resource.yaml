@@ -1,8 +1,0 @@
-id: allocatedcluster
-title: CNP Cluster
-titlePlural: CNP Clusters
-category: Configuration
-overviewShort: |
-  CNP Kubernetes cluster
-overview: |
-  CNP Kubernetes cluster with variable node count and Splunk logging.
