@@ -1,0 +1,16 @@
+apiVersion: pkg.crossplane.io/v1alpha1
+kind: Configuration
+metadata:
+  name: cnp-eks
+  annotations:
+    company: ExampleCo
+    maintainer: Wan Jillies <wan@example.org>
+    keywords: cloud-native, kubernetes, aws, eks
+    source: github.com/negz/aac
+    license: Apache-2.0
+    description: |
+      An ExampleCo Cloud Native Platform (CNP) Elastic Kubernetes Cluster. 
+spec:
+  dependsOn:
+  - package: crossplane/provider-aws
+    version: "<1.0.0"
