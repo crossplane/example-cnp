@@ -3,7 +3,18 @@
 This repository contains configuration for the Cloud Native Platform (CNP). CNP
 consists of a series of Crossplane packages that are automatically built and
 pushed to the Upbound Cloud Registry by CI/CD when commits are merged to this
-repository. The following packages exist:
+repository.
+
+> The purpose of this repository is to provide a sketch of a great experience
+> that Crossplane could provide for a platform builder. In some cases the
+> proposed changes are relatively straightforward; they may be actionable
+> without further design. In many cases the proposed changes will need further
+> design work. The [master branch] of this repository is intended to represent
+> a 'north star'; what we would build if unbounded by time and resources. The
+> [scoped-september branch] of this repository is a variant that is scoped to
+> what we think we can build by mid September 2020.
+
+The following packages exist:
 
 * `eks.clusters.cnp.example.org` - Defines a composite resource representing an
   EKS cluster (including all network and IAM dependencies).
@@ -91,3 +102,5 @@ Cloud) to read and write namespace annotations to determine which resources are
 allowed (by RBAC) in a particular namespace.
 
 [Package Manager refactor]: https://github.com/crossplane/crossplane/pull/1616
+[master branch]: https://github.com/crossplane/example-cnp/tree/master
+[scoped-september branch]: https://github.com/crossplane/example-cnp/tree/scoped-september
