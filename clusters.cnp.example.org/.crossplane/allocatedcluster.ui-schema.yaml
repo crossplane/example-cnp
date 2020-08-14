@@ -1,4 +1,3 @@
-initialConfig: true
 configSections:
 - title: Cluster Settings
   description: Provide the following cluster configuration parameters
