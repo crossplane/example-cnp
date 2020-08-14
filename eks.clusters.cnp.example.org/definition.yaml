@@ -41,7 +41,7 @@ spec:
                     - large
                   required:
                   - count
-                  - type
+                  - size
                 required:
                 - nodes
             required:

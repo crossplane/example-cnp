@@ -65,7 +65,7 @@ spec:
                     - large
                   required:
                   - count
-                  - type
+                  - size
                 logging:
                   type: object
                   description: Splunk logging configuration for cluster logs.
