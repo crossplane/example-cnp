@@ -1,0 +1,53 @@
+---
+apiVersion: apiextensions.crossplane.io/v1alpha1
+kind: CompositeResourceDefinition
+metadata:
+  name: fluentbits.charts.cnp.example.org
+spec:
+  defaultCompositionRef:
+    name: fluentbits.charts.cnp.example.org
+  crdSpecTemplate:
+    group: charts.cnp.example.org
+    version: v1alpha1
+    names:
+      kind: FluentBit
+      listKind: FluentBitList
+      plural: fluentbits
+      singular: fluentbit
+    validation:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                description: FluentBit configuration parameters.
+                splunk:
+                  type: object
+                  description: Splunk backend to which to send logs.
+                  host:
+                    type: string
+                    description: Splunk API host.
+                  port:
+                    type: int
+                    description: Splunk API port.
+                  token:
+                    type: string
+                    description: Splunk API token.
+                  required:
+                  - token
+                required:
+                - splunk
+            providerRef:
+              type: object
+              description: Reference to a Kubernetes provider.
+              name:
+                type: string
+                description: Name of the Kubernetes provider to use.
+              required:
+              - name
+            required:
+            - parameters
+            - providerRef

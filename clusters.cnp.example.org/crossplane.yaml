@@ -1,0 +1,35 @@
+# The Configuration resource follows Kubernetes API conventions, but is simply
+# a configuration file rather than a custom resource in an API server. This is
+# similar to the approach the kubelet and kind take with their configuration.
+# The content of this file is emitted by the package image's ENTRYPOINT, and
+# used to create a PackageRevision.
+apiVersion: pkg.crossplane.io/v1alpha1
+kind: Configuration
+metadata:
+  name: cnp-cluster
+  annotations:
+    # Package metadata is stored as well-known but optional, free-form metadata
+    # ala https://packaging.python.org/specifications/core-metadata/. The data
+    # is opaque to Crossplane and its tooling, allowing for maximum flexibility
+    # in the contract between the authors and consumers of package metadata (at
+    # the expense of some loss of schema).
+    company: ExampleCo
+    maintainer: Wan Jillies <wan@example.org>
+    keywords: cloud-native, kubernetes
+    source: github.com/negz/aac
+    license: Apache-2.0
+    description: |
+      An ExampleCo Cloud Native Platform (CNP) Kubernetes Cluster, complete with
+      supporting infrastructure services such as logging and monitoring daemons.
+spec:
+  dependsOn:
+  - package: exampleco/cnp-eks
+    version: "0.1.0"
+  - package: exampleco/cnp-fluentbit
+    version: "0.1.0"
+  # Optional. Matching paths will be ignored by `crossplane package build`.
+  ignore:
+  - path: examples/
+  # crossplane.yaml may be of kind: Provider, rather than kind: Configuration.
+  # A Provider contains additional configuration, including an image to run.
+  #  controllerImage: crossplane/provider-gcp:v0.11.0

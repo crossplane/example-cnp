@@ -1,0 +1,81 @@
+---
+apiVersion: apiextensions.crossplane.io/v1alpha1
+kind: CompositeResourceDefinition
+metadata:
+  name: clusters.cnp.example.org
+spec:
+  defaultCompositionRef:
+    name: clusters.cnp.example.org
+  # This policy is equivalent to the existing InfrastructurePublication. Making
+  # this a field of the InfrastructureDefinition implies that the package author
+  # controls the publication of packaged types; it cannot easily be overridden
+  # without forking/duplicating the package. The options are 'Private' (the
+  # default), or 'Published'.
+  publicationPolicy: Published
+  # Publishing a composite resource defines a namespaced proxy of the composite
+  # resource. The group, version, and schema of this resource is identical to
+  # those of the composite resource but its kind must differ. Conceptually this
+  # is a 'published composite resource', rather than 'a requirement'.
+  publishedNames:
+    kind: Cluster
+    listKind: ClusterList
+    plural: clusters
+    singular: cluster
+  # This policy determines whether Crossplane will automatically create cluster
+  # roles for this composite resource and its requirement. ManageClusterRoles is
+  # the default. Under this policy Crossplane will create edit and view RBAC
+  # cluster roles for the composite resource and requirement (if any). The roles
+  # will aggregate to the Crossplane service account, crossplane-admin role, the
+  # global edit and view roles, and any matching namespaced edit and view roles.
+  rbacPolicy: ManageClusterRoles
+  connectionSecretKeys:
+  - kubeconfig
+  # Note that there is no distinct UI metadata; UI forms are derived from the
+  # crdSpecTemplate, which includes enough detail to infer how to build a form.
+  crdSpecTemplate:
+    group: cnp.example.org
+    version: v1alpha1
+    names:
+      kind: AllocatedCluster
+      listKind: AllocatedClusterList
+      plural: allocatedclusters
+      singular: allocatedcluster
+    validation:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                description: Cluster configuration parameters.
+                nodes:
+                  type: object
+                  description: Cluster node configuration parameters.
+                  count:
+                    type: int
+                    description: Desired node count, from 1 to 100.
+                  size:
+                    type: string
+                    description: Size of node.
+                    enum:
+                    - small
+                    - medium
+                    - large
+                  required:
+                  - count
+                  - size
+                logging:
+                  type: object
+                  description: Splunk logging configuration for cluster logs.
+                  token:
+                    type: string
+                    description: Splunk API token.
+                  required:
+                  - token
+                required:
+                - nodes
+                - splunk
+            required:
+            - parameters
