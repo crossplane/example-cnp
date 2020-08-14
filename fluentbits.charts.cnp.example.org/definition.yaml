@@ -40,7 +40,7 @@ spec:
                   - token
                 required:
                 - splunk
-            providerRef:
+            providerCredentialsRef:
               type: object
               description: Reference to a Kubernetes provider.
               name:
@@ -50,4 +50,4 @@ spec:
               - name
             required:
             - parameters
-            - providerRef
+            - providerCredentialsRef
