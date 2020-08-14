@@ -7,10 +7,10 @@ metadata:
 spec:
   writeConnectionSecretsToNamespace: crossplane-system
   reclaimPolicy: Delete
-  compositeResource:
+  compositeTypeRef:
     apiVersion: charts.cnp.example.org/v1alpha1
     kind: FluentBit
-  composedResources:
+  resources:
   - base:
       apiVersion: helm.crossplane.io/v1alpha1
       kind: Release

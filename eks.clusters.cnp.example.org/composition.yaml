@@ -7,10 +7,10 @@ metadata:
 spec:
   writeConnectionSecretsToNamespace: crossplane-system
   reclaimPolicy: Delete
-  compositeResource:
+  compositeTypeRef:
     apiVersion: clusters.cnp.example.org/v1alpha1
     kind: EKS
-  composedResources:
+  resources:
   - base:
       apiVersion: network.aws.crossplane.io/v1alpha3
       kind: VPC
