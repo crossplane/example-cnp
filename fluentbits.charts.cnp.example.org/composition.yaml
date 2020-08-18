@@ -29,8 +29,8 @@ spec:
             value: "8088"
           - name: backend.splunk.token
     patches:
-      - fromFieldPath: spec.providerCredentialsRef.name
-        toFieldPath: spec.providerCredentialsRef.name
+      - fromFieldPath: spec.providerConfigRef.name
+        toFieldPath: spec.providerConfigRef.name
       - fromFieldPath: spec.parameters.version
         toFieldPath: spec.set[0].value
       - fromFieldPath: spec.parameters.splunk.host

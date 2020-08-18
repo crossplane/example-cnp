@@ -367,15 +367,14 @@ spec:
             medium: t3.medium
             large: t3.large
   - base:
-      # ProviderCredentials is synonymous with the contemporary Provider kind.
+      # ProviderConfig is synonymous with the contemporary Provider kind.
       # This sketch proposes it be renamed to avoid confusion with the newly
       # introduced Provider kind (in the pkg.crossplane.io group) and to better
-      # clarify its purpose as a pointer to credentials. Note also that this
-      # type cannot currently be used in a composition because it is lacking the
-      # status conditions that a composite resource depends on to determine
-      # readiness.
+      # clarify its purpose. Note also that this type cannot currently be used
+      # in a composition because it is lacking the status conditions that a
+      # composite resource depends on to determine readiness.
       apiVersion: kubernetes.crossplane.io/v1alpha1
-      kind: ProviderCredentials
+      kind: ProviderConfig
     patches:
     - fromFieldPath: spec.writeConnectionSecretToRef.namespace
       toFieldPath: spec.credentialsSecretRef.namespace
