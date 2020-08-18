@@ -150,6 +150,13 @@ lifecycles; it allows a platform operator to offer pre-provisioned SQL instances
 (for example) via Crossplane that platform consumers may claim instantaneously,
 without waiting several minutes for the cloud provider to create them.
 
+One important note is that the audience of this "claim" concept is platform
+builders and operators; we expect platform consumers to think "I'm creating a
+Kubernetes Cluster", not "I'm creating a Kubernetes Cluster claim". This is why
+platform builders choose the `claimNames` of their composite resource when they
+define that resource. The platform builder is choosing how consumers will think
+of it - e.g. as "a Kubernetes Cluster".
+
 [Package Manager refactor]: https://github.com/crossplane/crossplane/pull/1616
 [master branch]: https://github.com/crossplane/example-cnp/tree/master
 [scoped-september branch]: https://github.com/crossplane/example-cnp/tree/scoped-september
