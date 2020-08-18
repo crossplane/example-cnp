@@ -101,6 +101,56 @@ kind of resource existing or not existing at the namespace level (i.e. Upbound
 Cloud) to read and write namespace annotations to determine which resources are
 allowed (by RBAC) in a particular namespace.
 
+## Frequently Asked Questions
+
+**Why 'composite resource'?**
+
+Composite resources typically model infrastructure - for example an SQL instance
+or a Kubernetes cluster may be modelled as a composite resource. While these are
+conceptually one resource, they're often actually composed of several underlying
+more granular resources at the cloud provider level. A "Kubernetes cluster", for
+example might actually consist of a control plane resource, a few node pool
+resources, and a few Helm chart resources. Thus the "Kubernetes cluster" is a
+composite of a control plane, node pools, and Helm charts.
+
+**What is a 'composite resource requirement'? Why does it exist?**
+
+Crossplane is built on the Kubernetes API. Kubernetes API resources may exist at
+one of two scopes - cluster or namespace. The cluster scope is global; cluster
+scoped resources exist outside any namespace and thus across all namespaces.
+Namespaced resources are grouped by namespace, where a namespace may represent a
+team, an environment, or any other grouping the platform operator deems useful.
+Cluster scoped resources are typically the sole domain of the platform operator.
+
+Composite resources typically model a conceptual infrastructure resource - for
+example an SQL instance, a Kubernetes cluster, or a VPC network. In many cases
+it makes sense for this infrastructure to exist at the namespace level; an SQL
+instance for example is typically used for a specific purpose, by a specific
+team, to power a specific service. In Kubernetes this service would typically be
+a Deployment in a particular namespace. It makes sense that the team would want
+to model the service's SQL instance in that namespace alongside the Deployment.
+In other cases a composite resource represents 'supporting infrastructure' - an
+infrastructure resource that supports other infrastructure resources that may
+exist across multiple namespaces. VPC networks are a common example of this
+pattern - a platform operator may wish to model a VPC network as a composite
+resource, and allow platform consumers to create Kubernetes cluster composite
+resources that exist in that VPC.
+
+In Crossplane all composite resources are cluster scoped, allowing a Kubernetes
+cluster composite resource (for example) to leverage a VPC network composite
+resource without crossing namespace boundaries (which is considered an anti
+pattern in Kubernetes). Composite resources may however support a namespaced
+'composite resource requirement' - a namespaced proxy of the composite resource.
+Creating, updating, or deleting a namespaced requirement creates, updates, or
+deletes a corresponding cluster scoped composite resource. This allows platform
+builders to distinguish global 'supporting infrastructure' that only a platform
+operator should interact with from infrastructure that platform consumers should
+be able to create, update, and delete on-demand. The separation of a composite
+resource from its requirement also decouples their lifecycles; it allows a
+platform operator to pre-provision SQL instances (for example) via Crossplane
+that platform consumers may later claim instantaneously, without waiting up to
+several minutes for the cloud provider to create them.
+
 [Package Manager refactor]: https://github.com/crossplane/crossplane/pull/1616
 [master branch]: https://github.com/crossplane/example-cnp/tree/master
 [scoped-september branch]: https://github.com/crossplane/example-cnp/tree/scoped-september
