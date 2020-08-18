@@ -6,17 +6,14 @@ metadata:
 spec:
   defaultCompositionRef:
     name: clusters.cnp.example.org
-  # This policy is equivalent to the existing InfrastructurePublication. Making
-  # this a field of the InfrastructureDefinition implies that the package author
-  # controls the publication of packaged types; it cannot easily be overridden
-  # without forking/duplicating the package. The options are 'Private' (the
-  # default), or 'Published'.
-  publicationPolicy: Published
-  # Publishing a composite resource defines a namespaced proxy of the composite
-  # resource. The group, version, and schema of this resource is identical to
-  # those of the composite resource but its kind must differ. Conceptually this
-  # is a 'published composite resource', rather than 'a requirement'.
-  publishedNames:
+  # Composite resources are cluster scoped, but each composite resource may
+  # optionally offer a namespaced 'composite resource claim'. A claim acts as a
+  # proxy for its composite resource - changes made to the claim are reflected
+  # on the composite resource. A claim shares the API group and schema of its
+  # corresponding composite resouce, but must have a different name. Omit the
+  # claim names when defining a composite resource that should not offer a
+  # corresponding requirement claim.
+  claimNames:
     kind: Cluster
     listKind: ClusterList
     plural: clusters
