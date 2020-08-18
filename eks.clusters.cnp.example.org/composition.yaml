@@ -18,16 +18,12 @@ spec:
         cidrBlock: 192.168.0.0/16
         enableDnsSupport: true
         enableDnsHostNames: true
-        providerRef:
-          name: cnp-aws
   - base:
       apiVersion: network.aws.crossplane.io/v1alpha3
       kind: InternetGateway
       spec:
         vpcIdSelector:
           matchControllerRef: true
-        providerRef:
-          name: cnp-aws
   - base:
       apiVersion: network.aws.crossplane.io/v1alpha3
       kind: Subnet
@@ -41,8 +37,6 @@ spec:
         vpcIdSelector:
           matchControllerRef: true
         availabilityZone: us-west-2a
-        providerRef:
-          name: cnp-aws
   - base:
       apiVersion: network.aws.crossplane.io/v1alpha3
       kind: Subnet
@@ -56,8 +50,6 @@ spec:
         vpcIdSelector:
           matchControllerRef: true
         availabilityZone: us-west-2b
-        providerRef:
-          name: cnp-aws
   - base:
       apiVersion: network.aws.crossplane.io/v1alpha3
       kind: Subnet
@@ -71,8 +63,6 @@ spec:
         vpcIdSelector:
           matchControllerRef: true
         availabilityZone: us-west-2c
-        providerRef:
-          name: cnp-aws
   - base:
       apiVersion: network.aws.crossplane.io/v1alpha3
       kind: Subnet
@@ -87,8 +77,6 @@ spec:
         availabilityZone: us-west-2a
         tags:
         - value: shared
-        providerRef:
-          name: cnp-aws
     patches:
       - fromFieldPath: metadata.annotations[crossplane.io/external-name]
         toFieldPath: spec.tags[0].key
@@ -111,8 +99,6 @@ spec:
         availabilityZone: us-west-2b
         tags:
         - value: shared
-        providerRef:
-          name: cnp-aws
     patches:
       - fromFieldPath: metadata.annotations[crossplane.io/external-name]
         toFieldPath: spec.tags[0].key
@@ -134,8 +120,6 @@ spec:
         availabilityZone: us-west-2c
         tags:
         - value: shared
-        providerRef:
-          name: cnp-aws
     patches:
       - fromFieldPath: metadata.annotations[crossplane.io/external-name]
         toFieldPath: spec.tags[0].key
@@ -184,8 +168,6 @@ spec:
               matchLabels:
                 zone: us-west-2c
                 access: private
-        providerRef:
-          name: cnp-aws
   - base:
       apiVersion: network.aws.crossplane.io/v1alpha3
       kind: SecurityGroup
@@ -201,8 +183,6 @@ spec:
             cidrBlocks:
               - cidrIp: 0.0.0.0/0
                 description: Everywhere
-        providerRef:
-          name: cnp-aws
   - base:
       apiVersion: identity.aws.crossplane.io/v1beta1
       kind: IAMRole
@@ -228,8 +208,6 @@ spec:
                   }
               ]
             }
-        providerRef:
-          name: cnp-aws
   - base:
       apiVersion: identity.aws.crossplane.io/v1beta1
       kind: IAMRolePolicyAttachment
@@ -240,8 +218,6 @@ spec:
             matchControllerRef: true
             matchLabels:
               role: controlplane
-        providerRef:
-          name: cnp-aws
   - base:
       apiVersion: eks.aws.crossplane.io/v1beta1
       kind: Cluster
@@ -257,8 +233,6 @@ spec:
             subnetIdSelector:
               matchControllerRef: true
           version: "1.16"
-        providerRef:
-          name: cnp-aws
     patches:
     - fromFieldPath: metadata.annotations[crossplane.io/external-name]
       toFieldPath: metadata.annotations[crossplane.io/external-name]
@@ -294,8 +268,6 @@ spec:
                   }
               ]
             }
-        providerRef:
-          name: cnp-aws
   - base:
       apiVersion: identity.aws.crossplane.io/v1beta1
       kind: IAMRolePolicyAttachment
@@ -306,8 +278,6 @@ spec:
             matchControllerRef: true
             matchLabels:
               role: nodegroup
-        providerRef:
-          name: cnp-aws
   - base:
       apiVersion: identity.aws.crossplane.io/v1beta1
       kind: IAMRolePolicyAttachment
@@ -318,8 +288,6 @@ spec:
             matchControllerRef: true
             matchLabels:
               role: nodegroup
-        providerRef:
-          name: cnp-aws
   - base:
       apiVersion: identity.aws.crossplane.io/v1beta1
       kind: IAMRolePolicyAttachment
@@ -330,8 +298,6 @@ spec:
             matchControllerRef: true
             matchLabels:
               role: nodegroup
-        providerRef:
-          name: cnp-aws
   - base:
       apiVersion: eks.aws.crossplane.io/v1alpha1
       kind: NodeGroup
@@ -353,8 +319,6 @@ spec:
             desiredSize: 1
           instanceTypes:
           - t3.medium
-        providerRef:
-          name: cnp-aws
     patches:
       - fromFieldPath: metadata.annotations[crossplane.io/external-name]
         toFieldPath: metadata.annotations[crossplane.io/external-name]
@@ -389,8 +353,6 @@ spec:
             desiredSize: 1
           instanceTypes:
           - t3.medium
-        providerRef:
-          name: cnp-aws
     patches:
       - fromFieldPath: metadata.annotations[crossplane.io/external-name]
         toFieldPath: metadata.annotations[crossplane.io/external-name]
@@ -405,8 +367,14 @@ spec:
             medium: t3.medium
             large: t3.large
   - base:
+      # ProviderConfig is synonymous with the contemporary Provider kind.
+      # This sketch proposes it be renamed to avoid confusion with the newly
+      # introduced Provider kind (in the pkg.crossplane.io group) and to better
+      # clarify its purpose. Note also that this type cannot currently be used
+      # in a composition because it is lacking the status conditions that a
+      # composite resource depends on to determine readiness.
       apiVersion: kubernetes.crossplane.io/v1alpha1
-      kind: Provider
+      kind: ProviderConfig
     patches:
     - fromFieldPath: spec.writeConnectionSecretToRef.namespace
       toFieldPath: spec.credentialsSecretRef.namespace
