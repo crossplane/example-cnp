@@ -5,10 +5,10 @@ metadata:
 spec:
   writeConnectionSecretsToNamespace: crossplane-system
   reclaimPolicy: Delete
-  compositeResource:
+  compositeTypeRef:
     apiVersion: cnp.example.org/v1alpha1
     kind: AllocatedCluster
-  composedResources:
+  resources:
   - base:
       apiVersion: clusters.cnp.example.org/v1alpha1
       kind: EKS
