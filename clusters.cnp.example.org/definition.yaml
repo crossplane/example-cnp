@@ -7,13 +7,13 @@ spec:
   defaultCompositionRef:
     name: clusters.cnp.example.org
   # Composite resources are cluster scoped, but each composite resource may
-  # optionally support a namespaced 'composite resource requirement'. A
-  # requirement acts as a proxy for its composite resource - changes made to the
-  # requirement are reflected on the composite resource. A requirement shares
-  # the API group and schema of its corresponding composite resouce, but must
-  # have a different name. Omit the requirement names when defining a composite
-  # resource that should not support a corresponding requirement resource.
-  requirementNames:
+  # optionally offer a namespaced 'composite resource claim'. A claim acts as a
+  # proxy for its composite resource - changes made to the claim are reflected
+  # on the composite resource. A claim shares the API group and schema of its
+  # corresponding composite resouce, but must have a different name. Omit the
+  # claim names when defining a composite resource that should not offer a
+  # corresponding requirement claim.
+  claimNames:
     kind: Cluster
     listKind: ClusterList
     plural: clusters

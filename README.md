@@ -113,7 +113,7 @@ example might actually consist of a control plane resource, a few node pool
 resources, and a few Helm chart resources. Thus the "Kubernetes cluster" is a
 composite of a control plane, node pools, and Helm charts.
 
-**What is a 'composite resource requirement'? Why does it exist?**
+**What is a 'composite resource claim'? Why does it exist?**
 
 Crossplane is built on the Kubernetes API. Kubernetes API resources may exist at
 one of two scopes - cluster or namespace. The cluster scope is global; cluster
@@ -139,17 +139,16 @@ resources that exist in that VPC.
 In Crossplane all composite resources are cluster scoped, allowing a Kubernetes
 cluster composite resource (for example) to leverage a VPC network composite
 resource without crossing namespace boundaries (which is considered an anti
-pattern in Kubernetes). Composite resources may however support a namespaced
-'composite resource requirement' - a namespaced proxy of the composite resource.
-Creating, updating, or deleting a namespaced requirement creates, updates, or
-deletes a corresponding cluster scoped composite resource. This allows platform
-builders to distinguish global 'supporting infrastructure' that only a platform
-operator should interact with from infrastructure that platform consumers should
-be able to create, update, and delete on-demand. The separation of a composite
-resource from its requirement also decouples their lifecycles; it allows a
-platform operator to pre-provision SQL instances (for example) via Crossplane
-that platform consumers may later claim instantaneously, without waiting up to
-several minutes for the cloud provider to create them.
+pattern in Kubernetes). Platform operators may however offer a namespaced
+'composite resource claim' - a namespaced proxy of the composite resource.
+Creating, updating, or deleting a claim creates, updates, or deletes its
+corresponding cluster scoped composite resource. This allows platform builders
+to distinguish global 'supporting infrastructure' that only a platform operator
+should interact with from the infrastructure they offer to platform consumers.
+The separation of a composite resource from its claim also decouples their
+lifecycles; it allows a platform operator to offer pre-provisioned SQL instances
+(for example) via Crossplane that platform consumers may claim instantaneously,
+without waiting several minutes for the cloud provider to create them.
 
 [Package Manager refactor]: https://github.com/crossplane/crossplane/pull/1616
 [master branch]: https://github.com/crossplane/example-cnp/tree/master
